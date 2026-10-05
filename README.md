@@ -1,4 +1,4 @@
-# AURA Credit Risk Evaluation & Underwriting System (Java 25)
+# Credit Risk Evaluation & Underwriting System (Java 25)
 
 An enterprise-grade, institutional **Credit Risk Evaluation & Underwriting Engine** built in **pure Java 25**. Features quantitative multi-pillar credit scoring, Basel II/III regulatory risk rating tiers, calibrated Probability of Default (PD), Loss Given Default (LGD), Expected Loss (EL), CCAR macroeconomic stress testing, portfolio Value at Risk (VaR), an interactive FinTech web dashboard, and a command-line interface (CLI).
 

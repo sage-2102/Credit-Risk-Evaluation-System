@@ -415,11 +415,18 @@ public class CreditRiskHttpServer {
                 path = "/index.html";
             }
 
-            // Prevent path traversal
-            File target = new File(baseDir, URLDecoder.decode(path.substring(1), StandardCharsets.UTF_8)).getCanonicalFile();
-            if (!target.getPath().startsWith(baseDir.getCanonicalPath()) || !target.exists() || target.isDirectory()) {
+            // Prevent path traversal and check both web/ and root directory
+            String decodedPath = URLDecoder.decode(path.substring(1), StandardCharsets.UTF_8);
+            File target = new File(baseDir, decodedPath).getCanonicalFile();
+            if (!target.exists() || target.isDirectory()) {
+                target = new File(".", decodedPath).getCanonicalFile();
+            }
+            if (!target.exists() || target.isDirectory()) {
                 // Return index.html fallback for client routing
                 target = new File(baseDir, "index.html");
+                if (!target.exists()) {
+                    target = new File("index.html");
+                }
                 if (!target.exists()) {
                     String notFound = "404 Not Found";
                     exchange.sendResponseHeaders(404, notFound.length());
