@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA Credit Risk Evaluation & Underwriting System</title>
+  <meta name="description" content="Enterprise Credit Risk Evaluation System powered by Java 25. Multi-pillar credit scoring, Basel III rating, PD/LGD calibration, and CCAR stress testing.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+      <div class="brand-section">
+        <div class="brand-logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">AURA CREDIT RISK</h1>
+          <div class="brand-sub">Enterprise Risk Underwriting • Java 25 Core</div>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-tab-btn active" data-tab="pane-dashboard" id="tab-btn-dashboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Overview
+        </button>
+        <button class="nav-tab-btn" data-tab="pane-evaluate" id="tab-btn-evaluate">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          Evaluate Loan
+        </button>
+        <button class="nav-tab-btn" data-tab="pane-simulator" id="tab-btn-simulator">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+          What-If Simulator
+        </button>
+        <button class="nav-tab-btn" data-tab="pane-history" id="tab-btn-history">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          Audit Log
+        </button>
+        <button class="nav-tab-btn" data-tab="pane-stress" id="tab-btn-stress">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Stress Testing
+        </button>
+        <button class="nav-tab-btn" data-tab="pane-rules" id="tab-btn-rules">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Policy Rules
+        </button>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="server-badge" id="server-status-badge">
+          <span class="pulse-dot"></span> Java 25 Engine Online
+        </div>
+        <button class="icon-btn" id="btn-theme-toggle" title="Toggle Light/Dark Theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-content">
+
+      <!-- ========================================== -->
+      <!-- TAB 1: DASHBOARD OVERVIEW -->
+      <!-- ========================================== -->
+      <section id="pane-dashboard" class="tab-pane active">
+        <!-- Top Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Applications Evaluated</span>
+              <div class="metric-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              </div>
+            </div>
+            <div class="metric-value" id="metric-total-apps">0</div>
+            <div class="metric-sub">Active Loan Portfolio</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Total Exposure (EAD)</span>
+              <div class="metric-icon-wrap" style="color:#06b6d4;background:rgba(6,182,212,0.12);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+              </div>
+            </div>
+            <div class="metric-value" id="metric-total-exposure">$0.00</div>
+            <div class="metric-sub">Portfolio Commitment Exposure</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Cumulative Expected Loss</span>
+              <div class="metric-icon-wrap" style="color:#f59e0b;background:rgba(245,158,11,0.12);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+            </div>
+            <div class="metric-value" id="metric-expected-loss">$0.00</div>
+            <div class="metric-sub">PD × LGD × EAD Aggregation</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Weighted Default Rate (PD)</span>
+              <div class="metric-icon-wrap" style="color:#8b5cf6;background:rgba(139,92,246,0.12);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+              </div>
+            </div>
+            <div class="metric-value" id="metric-avg-pd">0.00%</div>
+            <div class="metric-sub">1-Year Empirical Probability</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Value at Risk (95% VaR)</span>
+              <div class="metric-icon-wrap" style="color:#ef4444;background:rgba(239,68,68,0.12);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/></svg>
+              </div>
+            </div>
+            <div class="metric-value" id="metric-var-95">$0.00</div>
+            <div class="metric-sub">99% VaR: <span id="metric-var-99" style="font-family:'JetBrains Mono';">$0.00</span></div>
+          </div>
+        </div>
+
+        <!-- Dashboard Charts & Risk Distributions -->
+        <div class="content-grid-2">
+          <!-- Rating Breakdown -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">
+                <span class="card-title-icon">📊</span>
+                Basel II / III Risk Rating Distribution
+              </h2>
+              <span class="badge-tag" style="background:rgba(59,130,246,0.15);color:#60a5fa;">AAA to D</span>
+            </div>
+            <div id="rating-distribution-bars" style="min-height: 240px; display: flex; flex-direction: column; justify-content: space-around;">
+              <!-- Dynamic Bars populated by JS -->
+            </div>
+          </div>
+
+          <!-- Underwriting Decisions Overview -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">
+                <span class="card-title-icon">⚖</span>
+                Underwriting Decision Breakdown
+              </h2>
+              <button class="btn btn-secondary btn-sm" id="btn-run-sample-batch">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Execute Portfolio Batch
+              </button>
+            </div>
+            
+            <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:1rem;margin-top:0.75rem;">
+              <div class="metric-card" style="padding:1rem;border-left:4px solid #10b981;">
+                <div class="metric-label" style="color:#10b981;">Approved</div>
+                <div class="metric-value" id="stat-approved-count">0</div>
+                <div class="metric-sub">Prime & Low Risk</div>
+              </div>
+              <div class="metric-card" style="padding:1rem;border-left:4px solid #f59e0b;">
+                <div class="metric-label" style="color:#f59e0b;">Conditional</div>
+                <div class="metric-value" id="stat-conditional-count">0</div>
+                <div class="metric-sub">Stipulations Required</div>
+              </div>
+              <div class="metric-card" style="padding:1rem;border-left:4px solid #f97316;">
+                <div class="metric-label" style="color:#f97316;">Refer Review</div>
+                <div class="metric-value" id="stat-refer-count">0</div>
+                <div class="metric-sub">Credit Committee Audit</div>
+              </div>
+              <div class="metric-card" style="padding:1rem;border-left:4px solid #ef4444;">
+                <div class="metric-label" style="color:#ef4444;">Declined</div>
+                <div class="metric-value" id="stat-declined-count">0</div>
+                <div class="metric-sub">Breaches Policy Limits</div>
+              </div>
+            </div>
+
+            <div style="margin-top:1.5rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+              <a href="/api/export" class="btn btn-secondary btn-sm" download>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export CSV Dataset
+              </a>
+              <button class="btn btn-secondary btn-sm" onclick="fetch('/api/reset-samples', {method:'POST'}).then(() => location.reload())">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                Reset Default Samples
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB 2: NEW LOAN EVALUATION -->
+      <!-- ========================================== -->
+      <section id="pane-evaluate" class="tab-pane">
+        <div class="card" style="margin-bottom:1.5rem;">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">
+                <span class="card-title-icon">📋</span>
+                Institutional Credit Risk Underwriting Application
+              </h2>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;">
+                Computes 5-pillar credit scorecard, calibrated default probability (PD), loss given default (LGD), and expected loss.
+              </div>
+            </div>
+            <div>
+              <label for="preset-profile-select" style="font-size:0.8rem;color:var(--text-secondary);margin-right:0.5rem;font-weight:600;">Load Test Case:</label>
+              <select id="preset-profile-select" class="form-select" style="width:auto;display:inline-block;">
+                <option value="physician">Dr. Eleanor Vance (Prime AAA, $290k)</option>
+                <option value="business_owner">Marcus Brody (Business Owner, $165k)</option>
+                <option value="tech_engineer">Sophia Chen (Cloud Architect, $135k)</option>
+                <option value="freelancer">Jackson Reed (Freelancer Refer, $52k)</option>
+                <option value="subprime">Tyler Hayes (Subprime Declined, $34k)</option>
+              </select>
+            </div>
+          </div>
+
+          <form id="loan-evaluation-form">
+            <!-- Section 1: Applicant Profile -->
+            <div class="form-section-title">1. Borrower Profile & Capacity</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="input-fullName">Full Name</label>
+                <input type="text" id="input-fullName" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-email">Email Address</label>
+                <input type="email" id="input-email" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-phone">Phone Number</label>
+                <input type="text" id="input-phone" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="input-age">Age (Years)</label>
+                <input type="number" id="input-age" class="form-input" min="18" max="95" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-employmentType">Employment Type</label>
+                <select id="input-employmentType" class="form-select">
+                  <option value="SALARIED">Salaried Employee</option>
+                  <option value="BUSINESS_OWNER">Business Owner</option>
+                  <option value="SELF_EMPLOYED">Self Employed / Consultant</option>
+                  <option value="FREELANCE">Freelancer / Gig Economy</option>
+                  <option value="RETIRED">Retired / Pensioner</option>
+                  <option value="UNEMPLOYED">Unemployed</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-yearsEmployed">Years in Current Role</label>
+                <input type="number" id="input-yearsEmployed" class="form-input" step="0.5" min="0" required>
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="input-annualIncome">
+                  Annual Gross Income ($)
+                  <span class="form-hint">Verifiable W-2/1040</span>
+                </label>
+                <input type="number" id="input-annualIncome" class="form-input" min="1000" step="500" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-existingMonthlyDebt">
+                  Existing Monthly Debt ($)
+                  <span class="form-hint">Auto/Cards/Student</span>
+                </label>
+                <input type="number" id="input-existingMonthlyDebt" class="form-input" min="0" step="50" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-monthlyHousingPayment">
+                  Monthly Housing / Rent ($)
+                </label>
+                <input type="number" id="input-monthlyHousingPayment" class="form-input" min="0" step="50" required>
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="input-liquidAssets">
+                  Liquid Assets / Reserves ($)
+                  <span class="form-hint">Checking/Savings</span>
+                </label>
+                <input type="number" id="input-liquidAssets" class="form-input" min="0" step="500" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-jobTitle">Occupation / Title</label>
+                <input type="text" id="input-jobTitle" class="form-input">
+              </div>
+            </div>
+
+            <!-- Section 2: Credit Bureau Track Record -->
+            <div class="form-section-title">2. Credit Bureau Track Record</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="input-creditScore">
+                  Credit Score (FICO / Bureau)
+                  <span class="form-hint">300 - 850</span>
+                </label>
+                <input type="number" id="input-creditScore" class="form-input" min="300" max="850" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-delinquenciesLast2Years">
+                  Delinquencies (Last 24 Mo)
+                  <span class="form-hint">30/60/90+ days</span>
+                </label>
+                <input type="number" id="input-delinquenciesLast2Years" class="form-input" min="0" max="20" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-revolvingCreditUtilizationPct">
+                  Revolving Credit Utilization %
+                  <span class="form-hint">Ideal &lt; 30%</span>
+                </label>
+                <input type="number" id="input-revolvingCreditUtilizationPct" class="form-input" min="0" max="100" step="0.5" required>
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="input-creditHistoryYears">Credit History Depth (Years)</label>
+                <input type="number" id="input-creditHistoryYears" class="form-input" min="0" max="60" step="0.5" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-hardInquiriesLast6Months">Hard Inquiries (Last 6 Mo)</label>
+                <input type="number" id="input-hardInquiriesLast6Months" class="form-input" min="0" max="30" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-publicRecords">Public Records / Liens</label>
+                <input type="number" id="input-publicRecords" class="form-input" min="0" max="10" required>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:2rem;margin:0.5rem 0 1rem 0;">
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;cursor:pointer;">
+                <input type="checkbox" id="input-hasPastDefault">
+                <span>Has Historical Debt Default or Charge-Off</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;cursor:pointer;">
+                <input type="checkbox" id="input-hasCoSigner">
+                <span>Include Co-Signer / Guarantor</span>
+              </label>
+              <div class="form-group" id="cosigner-score-group" style="display:none;margin-bottom:0;">
+                <input type="number" id="input-coSignerCreditScore" class="form-input" placeholder="Co-Signer FICO" min="300" max="850" style="padding:0.35rem 0.65rem;">
+              </div>
+            </div>
+
+            <!-- Section 3: Loan Structure & Collateral -->
+            <div class="form-section-title">3. Loan Commitment & Collateral</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="input-loanAmount">
+                  Requested Principal ($)
+                </label>
+                <input type="number" id="input-loanAmount" class="form-input" min="1000" step="500" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-loanPurpose">Loan Purpose</label>
+                <select id="input-loanPurpose" class="form-select">
+                  <option value="MORTGAGE">Home Mortgage / Real Estate</option>
+                  <option value="AUTO">Auto Loan / Vehicle Financing</option>
+                  <option value="BUSINESS">Commercial / Business Expansion</option>
+                  <option value="DEBT_CONSOLIDATION">Debt Consolidation</option>
+                  <option value="PERSONAL">Personal / Unsecured Loan</option>
+                  <option value="EDUCATION">Education / Student Loan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-loanTermMonths">Term (Months)</label>
+                <select id="input-loanTermMonths" class="form-select">
+                  <option value="12">12 Months (1 Year)</option>
+                  <option value="24">24 Months (2 Years)</option>
+                  <option value="36" selected>36 Months (3 Years)</option>
+                  <option value="48">48 Months (4 Years)</option>
+                  <option value="60">60 Months (5 Years)</option>
+                  <option value="120">120 Months (10 Years)</option>
+                  <option value="240">240 Months (20 Years)</option>
+                  <option value="360">360 Months (30 Years)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="input-requestedInterestRate">Requested Rate %</label>
+                <input type="number" id="input-requestedInterestRate" class="form-input" min="1" max="35" step="0.05" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-collateralType">Collateral Asset Class</label>
+                <select id="input-collateralType" class="form-select">
+                  <option value="NONE">Unsecured / No Collateral</option>
+                  <option value="REAL_ESTATE">Real Estate / Property</option>
+                  <option value="CASH_DEPOSIT">Cash Deposit / CD</option>
+                  <option value="SECURITIES">Marketable Securities / Stocks</option>
+                  <option value="VEHICLE">Automobile / Vehicle</option>
+                  <option value="EQUIPMENT">Commercial Equipment</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-collateralValue">Collateral Valuation ($)</label>
+                <input type="number" id="input-collateralValue" class="form-input" min="0" step="500">
+              </div>
+            </div>
+
+            <div style="margin-top:1.5rem;display:flex;justify-content:flex-end;">
+              <button type="submit" class="btn btn-primary" id="btn-submit-evaluation" style="padding:0.75rem 2rem;font-size:1rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Execute Underwriting Assessment
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Real-time Evaluation Results Section (Appears after submission) -->
+        <div id="evaluation-result-section" style="display:none;">
+          <!-- Decision Banner -->
+          <div class="decision-banner" id="res-decision-banner">
+            <div class="decision-left">
+              <div class="decision-icon" id="res-decision-icon">✓</div>
+              <div>
+                <div class="decision-title" id="res-decision-title">Approved</div>
+                <div class="decision-desc" id="res-decision-desc">Meets all underwriting standards.</div>
+              </div>
+            </div>
+            <div class="decision-rating-tier">
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:0.25rem;">Basel II/III Rating Tier</div>
+              <span class="rating-badge-large" id="res-rating-badge">AAA (Prime)</span>
+            </div>
+          </div>
+
+          <!-- Gauges & Core Financial Metrics -->
+          <div class="content-grid-2">
+            <!-- Left: Gauges & Scorecard -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Credit Risk Scorecard & Calibrated PD</h3>
+              </div>
+
+              <!-- Gauges Container -->
+              <div class="gauges-container">
+                <!-- Composite Score Gauge -->
+                <div class="gauge-box">
+                  <svg class="gauge-svg" viewBox="0 0 140 85">
+                    <!-- Gauge Arc -->
+                    <path d="M 15 70 A 55 55 0 0 1 125 70" fill="none" stroke="#27354f" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M 15 70 A 55 55 0 0 1 125 70" fill="none" stroke="url(#scoreGrad)" stroke-width="12" stroke-dasharray="172" stroke-dashoffset="0" stroke-linecap="round"/>
+                    <defs>
+                      <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ef4444"/>
+                        <stop offset="50%" stop-color="#f59e0b"/>
+                        <stop offset="100%" stop-color="#10b981"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Needle -->
+                    <polygon id="gauge-needle" points="70,68 67,20 73,20" fill="#ffffff" transform="rotate(-90 70 70)" style="transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);"/>
+                    <circle cx="70" cy="70" r="5" fill="#3b82f6"/>
+                  </svg>
+                  <div class="gauge-num" id="gauge-score-value">0</div>
+                  <div class="gauge-title">Composite Risk Score (0-1000)</div>
+                </div>
+
+                <!-- Probability of Default (PD) -->
+                <div class="gauge-box">
+                  <div style="font-size:2rem;font-weight:700;font-family:'JetBrains Mono';color:#f59e0b;" id="res-pd">0.00%</div>
+                  <div class="gauge-title">1-Yr Default Prob (PD)</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.35rem;">Loss Given Default: <strong id="res-lgd" style="color:#fff;">0.0%</strong></div>
+                </div>
+
+                <!-- Expected Loss -->
+                <div class="gauge-box">
+                  <div style="font-size:1.85rem;font-weight:700;font-family:'JetBrains Mono';color:#ef4444;" id="res-expected-loss">$0.00</div>
+                  <div class="gauge-title">Expected Loss (EL)</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.35rem;">Recommended Rate: <strong id="res-rec-rate" style="color:#06b6d4;">0.00%</strong></div>
+                </div>
+              </div>
+
+              <!-- 5-Pillar Scorecard Breakdown -->
+              <h4 style="font-size:0.85rem;text-transform:uppercase;color:var(--accent-cyan);margin-bottom:0.85rem;letter-spacing:0.04em;">The 5 C's Credit Scorecard Breakdown</h4>
+              <div class="pillar-row">
+                <div class="pillar-meta">
+                  <span class="pillar-name">1. Credit History & Repayment Track (Weight: 35%)</span>
+                  <span class="pillar-score-text" id="pillar-credit-val">0 / 100</span>
+                </div>
+                <div class="pillar-bar-track">
+                  <div class="pillar-bar-fill" id="pillar-credit" style="width:0%;"></div>
+                </div>
+              </div>
+
+              <div class="pillar-row">
+                <div class="pillar-meta">
+                  <span class="pillar-name">2. Capacity & Debt Burdens (DTI/PTI) (Weight: 25%)</span>
+                  <span class="pillar-score-text" id="pillar-capacity-val">0 / 100</span>
+                </div>
+                <div class="pillar-bar-track">
+                  <div class="pillar-bar-fill" id="pillar-capacity" style="width:0%;"></div>
+                </div>
+              </div>
+
+              <div class="pillar-row">
+                <div class="pillar-meta">
+                  <span class="pillar-name">3. Capital & Liquid Reserves Buffer (Weight: 15%)</span>
+                  <span class="pillar-score-text" id="pillar-capital-val">0 / 100</span>
+                </div>
+                <div class="pillar-bar-track">
+                  <div class="pillar-bar-fill" id="pillar-capital" style="width:0%;"></div>
+                </div>
+              </div>
+
+              <div class="pillar-row">
+                <div class="pillar-meta">
+                  <span class="pillar-name">4. Collateral Coverage & LTV (Weight: 15%)</span>
+                  <span class="pillar-score-text" id="pillar-collateral-val">0 / 100</span>
+                </div>
+                <div class="pillar-bar-track">
+                  <div class="pillar-bar-fill" id="pillar-collateral" style="width:0%;"></div>
+                </div>
+              </div>
+
+              <div class="pillar-row">
+                <div class="pillar-meta">
+                  <span class="pillar-name">5. Employment & Stability Conditions (Weight: 10%)</span>
+                  <span class="pillar-score-text" id="pillar-stability-val">0 / 100</span>
+                </div>
+                <div class="pillar-bar-track">
+                  <div class="pillar-bar-fill" id="pillar-stability" style="width:0%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Financial Ratios & Underwriting Directives -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Capacity & Underwriting Audit</h3>
+              </div>
+
+              <div class="form-grid-2" style="margin-bottom:1rem;">
+                <div class="metric-card" style="padding:0.75rem;">
+                  <div class="metric-label">Monthly EMI</div>
+                  <div class="metric-value" style="font-size:1.3rem;" id="res-emi">$0.00</div>
+                  <div class="metric-sub">Total Repay: <span id="res-total-repay">$0.00</span></div>
+                </div>
+                <div class="metric-card" style="padding:0.75rem;">
+                  <div class="metric-label">Debt-to-Income (DTI)</div>
+                  <div class="metric-value" style="font-size:1.3rem;" id="res-dti">0.0%</div>
+                  <div class="metric-sub">Policy Limit: 45.0%</div>
+                </div>
+                <div class="metric-card" style="padding:0.75rem;">
+                  <div class="metric-label">Loan-to-Value (LTV)</div>
+                  <div class="metric-value" style="font-size:1.3rem;" id="res-ltv">0.0%</div>
+                  <div class="metric-sub">Collateral Leverage</div>
+                </div>
+                <div class="metric-card" style="padding:0.75rem;">
+                  <div class="metric-label">Liquidity Buffer</div>
+                  <div class="metric-value" style="font-size:1.3rem;" id="res-reserves">0.0 mos</div>
+                  <div class="metric-sub">Max Affordable: <span id="res-max-affordable">$0</span></div>
+                </div>
+              </div>
+
+              <!-- Adverse Risk Factors -->
+              <h4 style="font-size:0.82rem;text-transform:uppercase;color:#ef4444;margin-bottom:0.4rem;font-weight:700;">Adverse Factors (Adverse Action Notice)</h4>
+              <ul class="factor-list" id="res-adverse-list" style="margin-bottom:1rem;"></ul>
+
+              <!-- Mitigating Strengths -->
+              <h4 style="font-size:0.82rem;text-transform:uppercase;color:#10b981;margin-bottom:0.4rem;font-weight:700;">Mitigating Strengths</h4>
+              <ul class="factor-list" id="res-mitigating-list" style="margin-bottom:1rem;"></ul>
+
+              <!-- Conditions & Directives -->
+              <h4 style="font-size:0.82rem;text-transform:uppercase;color:#f59e0b;margin-bottom:0.4rem;font-weight:700;">Closing Stipulations & Directives</h4>
+              <ul class="factor-list" id="res-conditions-list"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB 3: REAL-TIME WHAT-IF SIMULATOR -->
+      <!-- ========================================== -->
+      <section id="pane-simulator" class="tab-pane">
+        <div class="card" style="margin-bottom:1.5rem;">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">
+                <span class="card-title-icon">🎛</span>
+                Real-Time "What-If" Sensitivity Sandbox
+              </h2>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;">
+                Adjust key borrower levers and immediately observe live score recalibration, rating migration, and credit decision.
+              </div>
+            </div>
+            <div>
+              <span id="sim-result-decision" class="status-chip approved" style="font-size:0.95rem;padding:0.4rem 1rem;">Approved</span>
+            </div>
+          </div>
+
+          <div class="content-grid-2">
+            <!-- Sliders Panel -->
+            <div>
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span>Credit Score (FICO)</span>
+                  <span class="slider-val-tag" id="sim-creditScore-val">720</span>
+                </div>
+                <input type="range" class="custom-range" id="sim-creditScore" min="350" max="850" value="720" step="5">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span>Annual Gross Income</span>
+                  <span class="slider-val-tag" id="sim-annualIncome-val">$95,000</span>
+                </div>
+                <input type="range" class="custom-range" id="sim-annualIncome" min="20000" max="400000" value="95000" step="5000">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span>Existing Monthly Debt</span>
+                  <span class="slider-val-tag" id="sim-existingDebt-val">$/mo 650</span>
+                </div>
+                <input type="range" class="custom-range" id="sim-existingDebt" min="0" max="6000" value="650" step="50">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span>Loan Amount Requested</span>
+                  <span class="slider-val-tag" id="sim-loanAmount-val">$35,000</span>
+                </div>
+                <input type="range" class="custom-range" id="sim-loanAmount" min="5000" max="300000" value="35000" step="2500">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span>Loan Term (Months)</span>
+                  <span class="slider-val-tag" id="sim-termMonths-val">36 Mos</span>
+                </div>
+                <input type="range" class="custom-range" id="sim-termMonths" min="12" max="120" value="36" step="12">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <span>Liquid Assets / Reserves</span>
+                  <span class="slider-val-tag" id="sim-liquidAssets-val">$24,000</span>
+                </div>
+                <input type="range" class="custom-range" id="sim-liquidAssets" min="1000" max="250000" value="24000" step="2000">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="sim-collateralType">Collateral Backing</label>
+                <select id="sim-collateralType" class="form-select">
+                  <option value="NONE">Unsecured Loan</option>
+                  <option value="REAL_ESTATE">Residential Real Estate</option>
+                  <option value="VEHICLE">Automobile</option>
+                  <option value="CASH_DEPOSIT">Cash / CD Deposit</option>
+                  <option value="SECURITIES">Stocks / Securities</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Live Simulator Output Panel -->
+            <div>
+              <div class="metrics-grid" style="grid-template-columns:repeat(2, 1fr);gap:1rem;margin-bottom:1rem;">
+                <div class="metric-card" style="padding:1rem;">
+                  <div class="metric-label">Composite Score</div>
+                  <div class="metric-value" id="sim-result-score">720</div>
+                  <div class="metric-sub">Basel: <strong id="sim-result-rating" style="color:#22c55e;">A (Prime)</strong></div>
+                </div>
+                <div class="metric-card" style="padding:1rem;">
+                  <div class="metric-label">Monthly EMI</div>
+                  <div class="metric-value" id="sim-result-emi">$1,088</div>
+                  <div class="metric-sub">Debt-to-Income: <span id="sim-result-dti" style="font-family:'JetBrains Mono';">28.4%</span></div>
+                </div>
+                <div class="metric-card" style="padding:1rem;">
+                  <div class="metric-label">Default Prob (PD)</div>
+                  <div class="metric-value" style="color:#f59e0b;" id="sim-result-pd">1.8%</div>
+                  <div class="metric-sub">Expected Loss: <span id="sim-result-loss">$450</span></div>
+                </div>
+                <div class="metric-card" style="padding:1rem;">
+                  <div class="metric-label">Pricing Rate</div>
+                  <div class="metric-value" style="color:#06b6d4;" id="sim-result-rec-rate">6.85%</div>
+                  <div class="metric-sub">Affordable Cap: <span id="sim-result-max-loan">$120,000</span></div>
+                </div>
+              </div>
+
+              <div class="card" style="background:rgba(0,0,0,0.3);padding:1.25rem;">
+                <h4 style="font-size:0.85rem;text-transform:uppercase;color:var(--text-secondary);margin-bottom:0.5rem;">Underwriter Simulator Guidance</h4>
+                <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.5;">
+                  Moving the credit score slider from 620 to 750 compresses the Probability of Default by approximately 80%, unlocking Tier-1 interest rate pricing. Increasing liquid reserves over 6 months significantly buffers DTI sensitivity.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB 4: AUDIT LOG & APPLICATIONS -->
+      <!-- ========================================== -->
+      <section id="pane-history" class="tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">
+                <span class="card-title-icon">📂</span>
+                Portfolio Evaluation Records & Audit Log
+              </h2>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;">
+                Comprehensive transaction repository with adverse action codes, Basel rating tiers, and underwriter memos.
+              </div>
+            </div>
+            <div style="display:flex;gap:0.75rem;">
+              <a href="/api/export" class="btn btn-primary btn-sm" download>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export CSV
+              </a>
+            </div>
+          </div>
+
+          <!-- Filter Bar -->
+          <div style="display:flex;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+            <div style="flex:1;min-width:240px;">
+              <input type="text" id="history-search-input" class="form-input" placeholder="Search by Applicant Name, ID, or Loan Ref...">
+            </div>
+            <div style="width:200px;">
+              <select id="history-decision-filter" class="form-select">
+                <option value="ALL">All Decisions</option>
+                <option value="APPROVED">Approved</option>
+                <option value="CONDITIONAL_APPROVAL">Conditional</option>
+                <option value="REFER_MANUAL_REVIEW">Referral</option>
+                <option value="DECLINED">Declined</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Records Table -->
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Application ID</th>
+                  <th>Applicant</th>
+                  <th>Loan Amount</th>
+                  <th>Credit Score</th>
+                  <th>DTI %</th>
+                  <th>Basel Tier</th>
+                  <th>Decision</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB 5: CCAR / BASEL STRESS TESTING -->
+      <!-- ========================================== -->
+      <section id="pane-stress" class="tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">
+                <span class="card-title-icon">⚡</span>
+                Macroeconomic Scenario Stress Testing (CCAR / Basel III)
+              </h2>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;">
+                Simulates severe shocks (interest rate surges, borrower income reduction, asset devaluation) to audit debt service resilience.
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;">
+            <div style="flex:1;min-width:300px;">
+              <label for="stress-app-select" style="font-size:0.82rem;font-weight:600;color:var(--text-secondary);margin-bottom:0.35rem;display:block;">Select Portfolio Loan to Test:</label>
+              <select id="stress-app-select" class="form-select">
+                <!-- Populated by JS -->
+              </select>
+            </div>
+            <div style="margin-top:1.4rem;">
+              <button class="btn btn-primary" id="btn-run-stress-test">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Run CCAR / Basel Stress Test
+              </button>
+            </div>
+          </div>
+
+          <!-- Stressed Scenarios Output Cards -->
+          <div class="stress-scenario-grid" id="stress-scenarios-container">
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">
+              Select an application above and click "Run CCAR / Basel Stress Test" to execute multi-scenario simulation.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- TAB 6: POLICY RULES CONFIGURATOR -->
+      <!-- ========================================== -->
+      <section id="pane-rules" class="tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">
+                <span class="card-title-icon">⚙</span>
+                Institutional Underwriting Policy Rules Matrix
+              </h2>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;">
+                Configure automated risk thresholds, debt ceilings, and benchmark pricing rates stored in the Java repository.
+              </div>
+            </div>
+          </div>
+
+          <form id="underwriting-rules-form">
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="rule-minCreditScoreAutoApprove">Min Score Auto-Approve</label>
+                <input type="number" id="rule-minCreditScoreAutoApprove" class="form-input" min="500" max="850">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rule-minCreditScoreAcceptable">Min Score Floor (Knockout)</label>
+                <input type="number" id="rule-minCreditScoreAcceptable" class="form-input" min="450" max="800">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rule-benchmarkRiskFreeRate">Benchmark Risk-Free Rate %</label>
+                <input type="number" id="rule-benchmarkRiskFreeRate" class="form-input" step="0.25">
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="rule-maxDtiAutoApprove">Max DTI % Auto-Approve</label>
+                <input type="number" id="rule-maxDtiAutoApprove" class="form-input" step="0.5">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rule-maxDtiAcceptable">Max DTI % Ceiling (Knockout)</label>
+                <input type="number" id="rule-maxDtiAcceptable" class="form-input" step="0.5">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rule-minReservesMonths">Min Liquid Reserves (Months)</label>
+                <input type="number" id="rule-minReservesMonths" class="form-input" step="0.5">
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label" for="rule-maxLtvAutoApprove">Max LTV % Auto-Approve</label>
+                <input type="number" id="rule-maxLtvAutoApprove" class="form-input" step="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rule-maxLtvAcceptable">Max LTV % Ceiling</label>
+                <input type="number" id="rule-maxLtvAcceptable" class="form-input" step="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="rule-minEmploymentYears">Min Employment Tenure (Years)</label>
+                <input type="number" id="rule-minEmploymentYears" class="form-input" step="0.5">
+              </div>
+            </div>
+
+            <div style="margin-top:1.5rem;display:flex;justify-content:flex-end;">
+              <button type="submit" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Save Underwriting Policy
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Audit Memo Modal -->
+  <div class="modal-backdrop" id="audit-modal">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <div id="modal-memo-content">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Application Logic -->
+  <script src="js/app.js"></script>
+</body>
+</html>

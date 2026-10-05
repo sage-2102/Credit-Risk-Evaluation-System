@@ -1,0 +1,21 @@
+# Compiled class files
+bin/
+*.class
+
+# IDE and Editor files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Temporary & test files
+sources.txt
+manifest.txt
+data/test_eval.json
